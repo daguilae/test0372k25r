@@ -1,0 +1,37 @@
+CREATE TABLE IF NOT EXISTS `tbl_percepciones_transaccional` (
+  `Cmp_iId_PercepcionTrans` INT(11) NOT NULL AUTO_INCREMENT,
+  `Cmp_iId_Nomina` INT(11) NOT NULL,
+  `Cmp_iId_Empleado` INT(11) NOT NULL,
+  `Cmp_iId_ConceptoNomina` INT(11) NOT NULL,
+  `Cmp_deMonto_Percepcion` DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  `Cmp_bEstado_PercepcionTrans` BIT(1) NOT NULL DEFAULT b'1',
+
+  PRIMARY KEY (`Cmp_iId_PercepcionTrans`),
+
+  KEY `IX_PerTrans_Nomina` (`Cmp_iId_Nomina`),
+  KEY `IX_PerTrans_Empleado` (`Cmp_iId_Empleado`),
+  KEY `IX_PerTrans_Concepto` (`Cmp_iId_ConceptoNomina`),
+
+  UNIQUE KEY `UK_PerTrans_Nomina_Empleado_Concepto`
+    (`Cmp_iId_Nomina`, `Cmp_iId_Empleado`, `Cmp_iId_ConceptoNomina`),
+
+  CONSTRAINT `Fk_PerTrans_Nomina`
+    FOREIGN KEY (`Cmp_iId_Nomina`)
+    REFERENCES `tbl_nomina` (`Cmp_iId_Nomina`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+
+  CONSTRAINT `Fk_PerTrans_Empleado`
+    FOREIGN KEY (`Cmp_iId_Empleado`)
+    REFERENCES `tbl_empleados` (`Cmp_iId_Empleado`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+
+  CONSTRAINT `Fk_PerTrans_ConceptoNomina`
+    FOREIGN KEY (`Cmp_iId_ConceptoNomina`)
+    REFERENCES `tbl_conceptosnomina` (`Cmp_iId_ConceptoNomina`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_general_ci;
